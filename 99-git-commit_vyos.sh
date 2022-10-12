@@ -10,10 +10,14 @@
 #              This script is intended to be used as a post-commit hook, allowing
 #              for automated config backup in a git repo.
 #              
-#              Place this file in /config/scripts/commit/post-hooks.d and mark it executable
+#              Place this file in /config/scripts/commit/post-hooks.d and mark it executable,
+#              and this script will run after every commit.
+#
+#
+
 
 # Variables: Set your CONF_DIR below, make sure it's an existing it repo
-#  i.e., clone the existing repo to a folder in /
+#  i.e., clone the existing repo to a folder in /config/user-data so it's persistent.
 TIMESTAMP="$(date '+%Y-%m-%dT%H:%M:%S %Z')"
 CONF_DIR=/config/user-data/repository-name
 
