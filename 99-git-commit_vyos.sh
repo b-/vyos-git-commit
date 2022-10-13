@@ -1,6 +1,6 @@
 #!/bin/vbash
 
-#        file: 99-git-commit
+#        file: 01-git-commit
 # description: Saves config commands & config json to files, commits to local
 #              git repo. Repo stored in /config/user-data/$CONFIG_REPO. Completes
 #              process with a push to the remote repo.
@@ -51,8 +51,11 @@ fi
 # Source the VyOS script-template to allow VyOS config commands to be exported
 source /opt/vyatta/etc/functions/script-template
 
+# Save user's current working directory
+USERPATH=$PWD
+
 # Change to repo directory & start processing
-cd $REPO_PATH/$CONF_DIR
+cd $REPO_PATH/$CONFIG_REPO
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Beginning git commit & push...\e[0m"
 
 # Git: Perform a 'pull' to ensure our local repo is up to date
@@ -79,9 +82,13 @@ echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Pushing changes to rem
 # Process complete
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Git commit & push completed.\e[0m"
 
+# Change back to user's last $PWD
+cd $USERPATH
+
 # Clean up variables
 CONFIG_REPO=""
 REPO_PATH=""
 TIMESTAMP=""
+USERPATH=""
 MSG=""
 M=""
