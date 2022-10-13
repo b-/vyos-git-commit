@@ -1,28 +1,40 @@
 #!/bin/vbash
 
-# vbash is not a typo :)
 #
 #        file: 99-git-commit
 # description: Saves config commands & config json to files, commits to local
-#              git repo. $CONF_DIR. Completes process with a push to the remote repo.
-#                
+#              git repo. Repo stored in /config/user-data/$CONFIG_REPO. Completes
+#              process with a push to the remote repo.
 #
 #              This script is intended to be used as a post-commit hook, allowing
 #              for automated config backup in a git repo.
-#              
-#              Place this file in /config/scripts/commit/post-hooks.d and mark it executable,
-#              and this script will run after every commit.
 #
+#              Install in /config/scripts/commit/post-hooks.d/ to run automatically
+#              after each VyOS commit.
 #
 
 
-# Variables: Set your CONF_DIR below, make sure it's an existing it repo
-#  i.e., clone the existing repo to a folder in /config/user-data so it's persistent.
+# Set your CONFIG_REPO directory name. This should be an existing repo.
+CONFIG_REPO=config-rtr01
+
+# Repository path. You shouldn't need to modify this. This location is persistent
+#  across reboots and upgrades in VyOS.
+REPO_PATH=/config/user-data
+
+# Timestamp format (YYYY-MM-DDTHH:mm:ss Z)
 TIMESTAMP="$(date '+%Y-%m-%dT%H:%M:%S %Z')"
-CONF_DIR=/config/user-data/repository-name
 
-# Set generic commit message unless variable "$M" is set
-# (i.e., M="message here" commit;save)
+# Below you have two options:
+#  OPTION 1 (DEFAULT BEHAVIOR): Set a commit message before committing VyOS changes by  
+#  setting the environment variable $M otherwise we'll use a generic commit message if 
+#  $M is empty.
+#
+#  OPTION 2: Prompt for a git commit message every time this script is run (i.e., after
+#  every VyOS commit). To use OPTION 2, commend out lines 37-41 and uncomment lines
+#  44 & 45.
+#
+
+# Use generic commit message unless variable "$M" is set (e.g., M="message here" commit;save)
 if [ -z "$M" ]; then
   MSG="Auto-triggered by $USER@$HOSTNAME config commit: $TIMESTAMP"
 else
@@ -33,21 +45,25 @@ fi
 #echo "Enter git commit message:"
 #read MSG
 
+##
+## Do the Work
+##
+
 # Source the VyOS script-template to allow VyOS config commands to be exported
 source /opt/vyatta/etc/functions/script-template
 
 # Change to repo directory & start processing
-cd $CONF_DIR
+cd $REPO_PATH/$CONF_DIR
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Beginning git commit & push...\e[0m"
 
 # Git: Perform a 'pull' to ensure our local repo is up to date
-echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Making sure our local repo is up-to-date...\e[0m"
+echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Ensuring our local repo is up-to-date...\e[0m"
 /usr/bin/git pull
 
 # VyOS: Save config commands & json to files
-echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Exporting configuration files...\e[0m"
-run show configuration commands > $CONF_DIR/$HOSTNAME.commands.conf
-run show configuration > $CONF_DIR/$HOSTNAME.config.boot
+echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Saving configuration files...\e[0m"
+run show configuration commands > $REPO_PATH/$CONFIG_REPO/$HOSTNAME.commands.conf
+run show configuration > $REPO_PATH/$CONFIG_REPO/$HOSTNAME.config.boot
 
 # Git: Stage changes
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Staging changes...\e[0m"
@@ -65,6 +81,8 @@ echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Pushing changes to rem
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Git commit & push completed.\e[0m"
 
 # Clean up variables
+CONFIG_REPO=""
+REPO_PATH=""
 TIMESTAMP=""
 MSG=""
-CONF_DIR=""
+M=""
