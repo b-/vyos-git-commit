@@ -1,6 +1,6 @@
 #!/bin/vbash
 
-#        file: 01-git-commit
+#        file: 99-git-commit
 # description: Saves config commands & config json to files, commits to local
 #              git repo. Repo stored in /config/user-data/$CONFIG_REPO. Completes
 #              process with a push to the remote repo.
