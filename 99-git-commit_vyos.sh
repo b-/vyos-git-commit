@@ -1,7 +1,6 @@
 #!/bin/vbash
 
-#
-#        file: 99-git-commit
+#        file: 01-git-commit
 # description: Saves config commands & config json to files, commits to local
 #              git repo. Repo stored in /config/user-data/$CONFIG_REPO. Completes
 #              process with a push to the remote repo.
@@ -14,19 +13,19 @@
 #
 
 
-# Set your CONFIG_REPO directory name. This should be an existing repo.
-CONFIG_REPO=config-rtr01
-
 # Repository path. You shouldn't need to modify this. This location is persistent
 #  across reboots and upgrades in VyOS.
 REPO_PATH=/config/user-data
+
+# Set your CONFIG_REPO directory name. This should be an git existing repository.
+CONFIG_REPO=config-rtr01
 
 # Timestamp format (YYYY-MM-DDTHH:mm:ss Z)
 TIMESTAMP="$(date '+%Y-%m-%dT%H:%M:%S %Z')"
 
 # Below you have two options:
 #  OPTION 1 (DEFAULT BEHAVIOR): Set a commit message before committing VyOS changes by  
-#  setting the environment variable $M otherwise we'll use a generic commit message if 
+#  setting the environment variable $M. Otherwise we'll use a generic commit message if 
 #  $M is empty.
 #
 #  OPTION 2: Prompt for a git commit message every time this script is run (i.e., after
