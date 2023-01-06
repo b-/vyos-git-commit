@@ -1,4 +1,5 @@
 #!/bin/vbash
+# shellcheck shell=bash
 
 #        file: 99-git-commit
 # description: Saves config commands & config json to files, commits to local
