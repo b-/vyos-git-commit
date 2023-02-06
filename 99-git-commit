@@ -61,7 +61,7 @@ echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Beginning git commit &
 
 # Git: Perform a 'pull' to ensure our local repo is up to date
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Ensuring our local repo is up-to-date...\e[0m"
-/usr/bin/git pull
+/usr/bin/git pull --ff-only
 
 # VyOS: Save config commands & json to files
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Saving configuration files...\e[0m"
