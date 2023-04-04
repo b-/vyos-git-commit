@@ -59,9 +59,9 @@ Resolving deltas: 100% (10/10), done.
 
 ## notes to self
 
-use deploy keys
+~~~~use deploy keys
     which means use system ssh config
-        which means you need updated vyos (for /etc/ssh_config.d fix) and possibly custom image (in order to put something there in the first place!)
+        which means you need updated vyos (for /etc/ssh_config.d fix) and possibly custom image (in order to put something there in the first place!)~~~~ _no need, because `git clone -c`
 
 i should look into what im including with my custom image in order to provide a less hacked one for public (without official support) offering.
 
