@@ -32,8 +32,8 @@ vyos@vyos$ cat ssh_git-deploy.pub
 
 ### 5. Clone your git repository using the new private key into `/config/user-data/vyos-config`
 ```shellsession
-vyos@vyos:~$ cd /config/user-data
-vyos@vyos:/config/user-data$ git clone -c "core.sshCommand=ssh -F/dev/null -i/config/user-data/id_ed25519" git@github.com:briorg/vyos-config -b vyos.home.ibeep.com --single-branch
+# We're going to preset the user.name and user.email `git config` values. don't be concerned...
+vyos@vyos$ git clone -c "core.sshCommand=ssh -F/dev/null -i/config/user-data/id_ed25519" -c "user.email=vyos@172.23.217.65" -c "user.name=vyos router" git@github.com:briorg/vyos-config -b vyos.home.ibeep.com --single-branch /config/user-data/vyos-config
 Cloning into 'vyos-config'...
 remote: Enumerating objects: 1650, done.
 remote: Counting objects: 100% (29/29), done.
