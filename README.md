@@ -55,6 +55,12 @@ Receiving objects: 100% (42/42), 7.14 KiB | 3.57 MiB/s, done.
 Resolving deltas: 100% (10/10), done.
 ```
 
+### 7. symlink the script into place
+```shellsession
+vyos@vyos# mkdir /config/scripts/commit/post-hooks.d -p
+vyos@vyos# ln -s /config/user-data/vyos-git-commit/99-git-commit /config/scripts/commit/post-hooks.d/
+```
+
 
 
 ## notes to self
