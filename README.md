@@ -19,14 +19,41 @@ Since it matches my setup and will be easy for me, let's assume your git reposit
 ### 2. Optional: create a branch specific for this router
 this will allow you to use one repository for multiple routers. I don't know if this really is ideal or not, but it works. Probably significantly less secure.
 
-### 3. Log into the router, and perform the following: 
+### 3. Log into the router, and create a new private key in `/config/user-data`: 
 ```shellsession
 vyos@vyos$ 
 vyos@vyos$ cd /config/user-data
 vyos@vyos$ ssh-keygen -t ed25519 -i ssh_git-deploy
 # follow the instructions, OMIT a password so it's not an encrypted key!
-vyos@vyos$ git clone 
+vyos@vyos$ cat ssh_git-deploy.pub 
 ```
+
+### 4. Upload that private key to your git host as a Deploy Key with write access
+
+### 5. Clone your git repository using the new private key into `/config/user-data/vyos-config`
+```shellsession
+vyos@vyos:~$ cd /config/user-data
+vyos@vyos:/config/user-data$ git clone -c "core.sshCommand=ssh -F/dev/null -i/config/user-data/id_ed25519" git@github.com:briorg/vyos-config -b vyos.home.ibeep.com --single-branch
+Cloning into 'vyos-config'...
+remote: Enumerating objects: 1650, done.
+remote: Counting objects: 100% (29/29), done.
+remote: Compressing objects: 100% (19/19), done.
+remote: Total 1650 (delta 14), reused 23 (delta 10), pack-reused 1621
+Receiving objects: 100% (1650/1650), 186.06 KiB | 5.32 MiB/s, done.
+Resolving deltas: 100% (1094/1094), done.
+```
+
+### 6. Clone _this_ repository
+```shellsession
+vyos@vyos:/config/user-data$ git clone https://github.com/b-/vyos-git-commit
+Cloning into 'vyos-git-commit'...
+remote: Enumerating objects: 42, done.
+remote: Counting objects: 100% (42/42), done.
+remote: Compressing objects: 100% (23/23), done.
+remote: Total 42 (delta 10), reused 37 (delta 8), pack-reused 0
+Receiving objects: 100% (42/42), 7.14 KiB | 3.57 MiB/s, done.
+Resolving deltas: 100% (10/10), done.
+```shellsession
 
 
 
