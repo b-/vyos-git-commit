@@ -53,7 +53,7 @@ remote: Compressing objects: 100% (23/23), done.
 remote: Total 42 (delta 10), reused 37 (delta 8), pack-reused 0
 Receiving objects: 100% (42/42), 7.14 KiB | 3.57 MiB/s, done.
 Resolving deltas: 100% (10/10), done.
-```shellsession
+```
 
 
 
