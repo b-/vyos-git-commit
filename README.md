@@ -9,10 +9,8 @@ NOTE 2: This readme is a very rough first draft I want to make just to get it ou
 
 ## Installation steps
 
-#NOT FINISHED DO NOT FOLLOW YET
-
 ### 1. Create a PRIVATE git repository 
-Create a (hosted, private) git repo that is accessible from the router. This repository _WILL_ contain private information such as private keys from the router, so _you really need to make it private._ I'm using a private repo on GitHub.com, but Bill uses a self-hosted repo because that's more trustworthy. 
+Create a (hosted, private) git repo that is accessible from the router. This repository _WILL_ contain private information such as WireGuard private keys from the router, so _you really need to make it private._ I'm using a private repo on GitHub.com, but Bill uses a self-hosted repo because that's more trustworthy. 
 
 Since it matches my setup and will be easy for me, let's assume your git repository is hosted at https://github.com/username/vyos-config. 
 
@@ -29,6 +27,9 @@ vyos@vyos$ cat ssh_git_deploy.pub
 ```
 
 ### 4. Upload that private key to your git host as a Deploy Key with write access
+![image](https://user-images.githubusercontent.com/284789/231319135-a3f4cbd2-fcd6-477b-bbd8-d191747335eb.png)
+
+
 
 ### 5. Clone your git repository using the new private key into `/config/user-data/vyos-config`
 ```shellsession
