@@ -23,7 +23,7 @@ this will allow you to use one repository for multiple routers. I don't know if 
 ```shellsession
 vyos@vyos$ 
 vyos@vyos$ cd /config/user-data
-vyos@vyos$ ssh-keygen -t ed25519 -i ssh_git-deploy
+vyos@vyos$ ssh-keygen -t ed25519 -f ssh_git-deploy
 # follow the instructions, OMIT a password so it's not an encrypted key!
 vyos@vyos$ cat ssh_git-deploy.pub 
 ```
