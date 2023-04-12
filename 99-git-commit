@@ -19,7 +19,7 @@
 REPO_PATH=/config/user-data
 
 # Set your CONFIG_REPO directory name. This should be an git existing repository.
-CONFIG_REPO=config-rtr01
+CONFIG_REPO=vyos-config
 
 # Timestamp format (YYYY-MM-DDTHH:mm:ss Z)
 TIMESTAMP="$(date '+%Y-%m-%dT%H:%M:%S %Z')"
