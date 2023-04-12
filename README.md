@@ -23,9 +23,9 @@ this will allow you to use one repository for multiple routers. I don't know if 
 ```shellsession
 vyos@vyos$ 
 vyos@vyos$ cd /config/user-data
-vyos@vyos$ ssh-keygen -t ed25519 -f ssh_git-deploy
+vyos@vyos$ ssh-keygen -t ed25519 -f ssh_git_deploy
 # follow the instructions, OMIT a password so it's not an encrypted key!
-vyos@vyos$ cat ssh_git-deploy.pub 
+vyos@vyos$ cat ssh_git_deploy.pub 
 ```
 
 ### 4. Upload that private key to your git host as a Deploy Key with write access
@@ -33,7 +33,8 @@ vyos@vyos$ cat ssh_git-deploy.pub
 ### 5. Clone your git repository using the new private key into `/config/user-data/vyos-config`
 ```shellsession
 # We're going to preset the user.name and user.email `git config` values. don't be concerned...
-vyos@vyos$ git clone -c "core.sshCommand=ssh -F/dev/null -i/config/user-data/id_ed25519" -c "user.email=vyos@172.23.217.65" -c "user.name=vyos router" git@github.com:briorg/vyos-config -b vyos.home.ibeep.com --single-branch /config/user-data/vyos-config
+vyos@vyos$ git clone -c "core.sshCommand=ssh -F/dev/null -i/config/user-data/ssh_git-deploy" -c "user.email=vyos@vyos" -c "user.name=vyos router" git@github.com:briorg/vyos-config -b vyos.home.ibeep.com --single-branch /config/user-data/vyos-config
+vyos@vyos$ 
 Cloning into 'vyos-config'...
 remote: Enumerating objects: 1650, done.
 remote: Counting objects: 100% (29/29), done.
@@ -45,7 +46,7 @@ Resolving deltas: 100% (1094/1094), done.
 
 ### 6. Clone _this_ repository
 ```shellsession
-vyos@vyos:/config/user-data$ git clone https://github.com/b-/vyos-git-commit
+vyos@vyos:/config/user-data$ git clone https://github.com/b-/vyos-git-commit /config/user-data/vyos-git-commit
 Cloning into 'vyos-git-commit'...
 remote: Enumerating objects: 42, done.
 remote: Counting objects: 100% (42/42), done.
@@ -61,14 +62,33 @@ vyos@vyos# mkdir /config/scripts/commit/post-hooks.d -p
 vyos@vyos# ln -s /config/user-data/vyos-git-commit/99-git-commit /config/scripts/commit/post-hooks.d/
 ```
 
+That's it! 
 
-
-## notes to self
-
-~~use deploy keys
-    which means use system ssh config
-        which means you need updated vyos (for /etc/ssh_config.d fix) and possibly custom image (in order to put something there in the first place!)~~ _no need, because `git clone -c`
-
-i should look into what im including with my custom image in order to provide a less hacked one for public (without official support) offering.
-
-look into prebuilding image with deploy keys, but really we should make an xml config commands setup thing (https://github.com/vyos/vyos1x) to add preferred ssh keys for given servers.
+You can test it by changing the config, and making a commit:
+```shellsession
+vyos@vyos$ configure
+[edit]
+vyos@vyos# set firewall group network-group foo
+[edit]
+vyos@vyos# commit
+vyos@vyos-evo# commit
+> [ 2023-04-12T00:43:02 UTC ] Beginning git commit & push...
+> [ 2023-04-12T00:43:02 UTC ] Ensuring our local repo is up-to-date...
+Already up to date.
+> [ 2023-04-12T00:43:02 UTC ] Saving configuration files...
+> [ 2023-04-12T00:43:02 UTC ] Staging changes...
+> [ 2023-04-12T00:43:02 UTC ] Committing changes...
+[vyos-evo a8a4eb6] Auto-triggered by vyos@vyos-evo config commit: 2023-04-12T00:43:02 UTC
+ 2 files changed, 3 deletions(-)
+> [ 2023-04-12T00:43:02 UTC ] Pushing changes to remote repository...
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 2 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 427 bytes | 427.00 KiB/s, done.
+Total 4 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To github.com:briorg/vyos-config
+   e17d766..a8a4eb6  vyos-evo -> vyos-evo
+> [ 2023-04-12T00:43:02 UTC ] Git commit & push completed.
+```
