@@ -66,7 +66,8 @@ echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Ensuring our local rep
 # VyOS: Save config commands & json to files
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Saving configuration files...\e[0m"
 run show configuration commands > $REPO_PATH/$CONFIG_REPO/$HOSTNAME.commands.conf
-run show configuration > $REPO_PATH/$CONFIG_REPO/$HOSTNAME.config.boot
+run show configuration > $REPO_PATH/$CONFIG_REPO/$HOSTNAME.config.show.txt
+cp /config/config.boot $REPO_PATH/$CONFIG_REPO/$HOSTNAME.config.boot
 
 # Git: Stage changes
 echo -e "\e[1;32m> [\e[1;37m $TIMESTAMP\e[1;32m ]\e[1;36m Staging changes...\e[0m"
