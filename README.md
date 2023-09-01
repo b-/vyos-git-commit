@@ -18,7 +18,7 @@ this will allow you to use one repository for multiple routers. I don't know if 
 ### 3. Log into the router, and create a new private key in `/config/user-data`: 
 ```shellsession
 vyos@vyos$ ssh-keygen -t ed25519 -f /config/user-data/ssh_git_deploy
-vyos@vyos$ cat ssh_git_deploy.pub 
+vyos@vyos$ cat /config/user-data/ssh_git_deploy.pub 
 ```
 
 ### 4. Upload that private key to your git host as a Deploy Key with write access
